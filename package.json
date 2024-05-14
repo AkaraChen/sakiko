@@ -1,0 +1,39 @@
+{
+    "name": "sakiko",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "test": "vitest",
+        "build": "tsup",
+        "format": "prettier --write .",
+        "lint": "publint"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@akrc/tsconfig": "^1.0.2",
+        "prettier": "^3.2.5",
+        "prettier-config-akrc": "^1.0.1",
+        "publint": "^0.2.7",
+        "tslib": "^2.6.2",
+        "tsup": "^8.0.2",
+        "typescript": "^5.4.5",
+        "vitest": "^1.6.0"
+    },
+    "dependencies": {
+        "ts-pattern": "^5.1.1"
+    },
+    "files": [
+        "dist"
+    ],
+    "type": "commonjs",
+    "types": "dist/index.d.ts",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "exports": {
+        "types": "./dist/index.d.mts",
+        "require": "./dist/index.js",
+        "import": "./dist/index.mjs"
+    }
+}
