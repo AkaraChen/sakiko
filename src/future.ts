@@ -1,49 +1,90 @@
-import { __TAG__ } from './symbols'
-
+/**
+ * Represents a Future, which is a subclass of Promise.
+ * @template T The type of the resolved value.
+ * @template E The type of the rejected error.
+ */
 export class Future<T, E> extends Promise<T> {
-    [__TAG__]: 'Pending' | 'Fulfilled' | 'Rejected'
+    protected state: 'Pending' | 'Fulfilled' | 'Rejected';
+
+    /**
+     * Creates a new Future instance.
+     * @param executor A function that is called immediately with the resolve and reject functions.
+     */
     constructor(
         executor: (
             resolve: (value: T) => void,
             reject: (error: E) => void,
         ) => void,
     ) {
-        let resolve: (value: T) => void
-        let reject: (error: E) => void
+        let resolve: (value: T) => void;
+        let reject: (error: E) => void;
         super((res, rej) => {
-            resolve = res
-            reject = rej
-        })
-        this[__TAG__] = 'Pending'
+            resolve = res;
+            reject = rej;
+        });
+        this.state = 'Pending';
         executor(
             value => {
-                this[__TAG__] = 'Fulfilled'
-                resolve(value)
+                this.state = 'Fulfilled';
+                resolve(value);
             },
             error => {
-                this[__TAG__] = 'Rejected'
-                reject(error)
+                this.state = 'Rejected';
+                reject(error);
             },
-        )
+        );
     }
+
+    /**
+     * Creates a Future that resolves with the given value.
+     * @param value The value to resolve with.
+     * @returns A new Future instance.
+     */
     static ok<T, E>(value: T) {
-        return Future.from(Promise.resolve(value))
+        return Future.from<T, E>(Promise.resolve(value));
     }
+
+    /**
+     * Creates a Future that rejects with the given error.
+     * @param error The error to reject with.
+     * @returns A new Future instance.
+     */
     static err<T, E>(error: E) {
-        return Future.from(Promise.reject(error))
+        return Future.from<T, E>(Promise.reject(error));
     }
+
+    /**
+     * Creates a Future from an existing Promise.
+     * @param promise The Promise to create the Future from.
+     * @returns A new Future instance.
+     */
     static from<T, E>(promise: Promise<T>) {
         return new Future<T, E>((resolve, reject) => {
-            promise.then(resolve).catch(reject)
-        })
+            promise.then(resolve).catch(reject);
+        });
     }
+
+    /**
+     * Checks if the Future is in the pending state.
+     * @returns True if the Future is pending, false otherwise.
+     */
     isPending() {
-        return this[__TAG__] === 'Pending'
+        return this.state === 'Pending';
     }
+
+    /**
+     * Checks if the Future is in the fulfilled state.
+     * @returns True if the Future is fulfilled, false otherwise.
+     */
     isFulfilled() {
-        return this[__TAG__] === 'Fulfilled'
+        return this.state === 'Fulfilled';
     }
+
+    /**
+     * Checks if the Future is in the rejected state.
+     * @returns True if the Future is rejected, false otherwise.
+     */
     isRejected() {
-        return this[__TAG__] === 'Rejected'
+        return this.state === 'Rejected';
     }
 }

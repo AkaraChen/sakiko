@@ -6,7 +6,8 @@
         "test": "vitest",
         "build": "tsup",
         "format": "prettier --write .",
-        "lint": "publint"
+        "lint": "publint",
+        "doc": "typedoc src/index.ts"
     },
     "keywords": [],
     "author": "",
@@ -18,11 +19,9 @@
         "publint": "^0.2.7",
         "tslib": "^2.6.2",
         "tsup": "^8.0.2",
+        "typedoc": "^0.25.13",
         "typescript": "^5.4.5",
         "vitest": "^1.6.0"
-    },
-    "dependencies": {
-        "ts-pattern": "^5.1.1"
     },
     "files": [
         "dist"
@@ -35,5 +34,6 @@
         "types": "./dist/index.d.mts",
         "require": "./dist/index.js",
         "import": "./dist/index.mjs"
-    }
+    },
+    "packageManager": "pnpm@9.1.4"
 }
