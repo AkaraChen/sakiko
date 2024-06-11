@@ -7,7 +7,7 @@
         "build": "tsup",
         "format": "prettier --write .",
         "lint": "publint",
-        "doc": "typedoc src/index.ts"
+        "doc": "typedoc src/index.ts --plugin typedoc-material-theme  --themeColor '#1C6EF3'"
     },
     "keywords": [],
     "author": "",
@@ -20,6 +20,7 @@
         "tslib": "^2.6.2",
         "tsup": "^8.0.2",
         "typedoc": "^0.25.13",
+        "typedoc-material-theme": "^1.0.2",
         "typescript": "^5.4.5",
         "vitest": "^1.6.0"
     },

@@ -28,6 +28,9 @@ importers:
             typedoc:
                 specifier: ^0.25.13
                 version: 0.25.13(typescript@5.4.5)
+            typedoc-material-theme:
+                specifier: ^1.0.2
+                version: 1.0.2(typedoc@0.25.13(typescript@5.4.5))
             typescript:
                 specifier: ^5.4.5
                 version: 5.4.5
@@ -501,6 +504,12 @@ packages:
         resolution:
             {
                 integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==,
+            }
+
+    '@material/material-color-utilities@0.2.7':
+        resolution:
+            {
+                integrity: sha512-0FCeqG6WvK4/Cc06F/xXMd/pv4FeisI0c1tUpBbfhA2n9Y8eZEv4Karjbmf2ZqQCPUWMrGp8A571tCjizxoTiQ==,
             }
 
     '@nodelib/fs.scandir@2.1.5':
@@ -1807,6 +1816,15 @@ packages:
             }
         engines: { node: '>=4' }
 
+    typedoc-material-theme@1.0.2:
+        resolution:
+            {
+                integrity: sha512-/nH/twYeHrnz5sZaaXzYJ85EOgKqnbl1ivzBKmuEAga1dBsARttwQUTPKAT7XrCPD+rRcoqxuCOdXZ6EGiqRQA==,
+            }
+        engines: { node: '>=18.0.0', npm: '>=8.6.0' }
+        peerDependencies:
+            typedoc: ^0.25.3
+
     typedoc@0.25.13:
         resolution:
             {
@@ -2143,6 +2161,8 @@ snapshots:
         dependencies:
             '@jridgewell/resolve-uri': 3.1.2
             '@jridgewell/sourcemap-codec': 1.4.15
+
+    '@material/material-color-utilities@0.2.7': {}
 
     '@nodelib/fs.scandir@2.1.5':
         dependencies:
@@ -2871,6 +2891,11 @@ snapshots:
             - ts-node
 
     type-detect@4.0.8: {}
+
+    typedoc-material-theme@1.0.2(typedoc@0.25.13(typescript@5.4.5)):
+        dependencies:
+            '@material/material-color-utilities': 0.2.7
+            typedoc: 0.25.13(typescript@5.4.5)
 
     typedoc@0.25.13(typescript@5.4.5):
         dependencies:
