@@ -1,14 +1,20 @@
+import { toError } from './utils'
+
 /**
  * Represents a result that can either hold a value of type `T` or an error of type `E`.
  *
  * @template T The type of the value.
  * @template E The type of the error.
  */
-export class Result<T, E> {
+export class Result<T, E extends Error = Error> {
+    readonly error: E | null
+
     constructor(
         readonly value: T | null,
-        readonly error: E | null,
-    ) {}
+        error: E | string | null,
+    ) {
+        this.error = error === null ? error : toError<E>(error)
+    }
     /**
      * Creates a new `Result` instance with a successful value.
      *
@@ -17,8 +23,8 @@ export class Result<T, E> {
      * @param value - The successful value.
      * @returns A new `Result` instance with the successful value.
      */
-    static ok<T, E>(value: T) {
-        return new Result(value, null as E)
+    static ok<T, E extends Error = Error>(value: T) {
+        return new Result<T, E>(value, null)
     }
     /**
      * Creates a new `Result` instance representing an error.
@@ -28,11 +34,8 @@ export class Result<T, E> {
      * @param {E | string} error - The error object or error message.
      * @returns {Result<T, E>} - A new `Result` instance representing an error.
      */
-    static err<T, E extends Error>(error: E | string): Result<T, E> {
-        return new Result(
-            null as T,
-            error instanceof Error ? error : (new Error(error) as E),
-        )
+    static err<T, E extends Error = Error>(error: E | string): Result<T, E> {
+        return new Result<T, E>(null, toError(error))
     }
     /**
      * Creates a new Result instance from a value and an error.
@@ -42,7 +45,10 @@ export class Result<T, E> {
      * @param {E | null} error The error of the Result.
      * @returns {Result<T, E>} A new Result instance.
      */
-    static from<T, E>(value: T, error: E | null): Result<T, E> {
+    static from<T, E extends Error = Error>(
+        value: T,
+        error: E | null,
+    ): Result<T, E> {
         return new Result<T, E>(value, error)
     }
     /**
@@ -99,7 +105,7 @@ export class Result<T, E> {
     map<U>(fn: (value: T) => U): Result<U, E> {
         return this.isOk()
             ? new Result<U, E>(fn(this.value as T), null)
-            : new Result<U, E>(null, this.error as E)
+            : new Result<U, E>(null, this.error)
     }
     /**
      * Maps the value of the `Result` to a new value using the provided function,
@@ -134,7 +140,7 @@ export class Result<T, E> {
      * @param {function(error: E): F} fn - The function to map the error value.
      * @returns {Result<T, F>} - A new Result with the mapped error value.
      */
-    mapErr<F>(fn: (error: E) => F): Result<T, F> {
+    mapErr<F extends Error = Error>(fn: (error: E) => F): Result<T, F> {
         return this.isErr()
             ? new Result<T, F>(null, fn(this.error as E))
             : new Result<T, F>(this.value as T, null)
@@ -148,9 +154,7 @@ export class Result<T, E> {
      * @returns The current Result if the predicate returns true, otherwise a new Result with the same error.
      */
     inspect(predicate: (value: T) => boolean) {
-        return this.isOkAnd(predicate)
-            ? this
-            : new Result(null, this.error as E)
+        return this.isOkAnd(predicate) ? this : new Result(null, this.error)
     }
     /**
      * Inspects the error value of the Result and returns a new Result with the same value and error if the provided predicate returns true.
@@ -160,9 +164,7 @@ export class Result<T, E> {
      * @returns A new Result instance with the same value and error if the predicate returns true, otherwise a new Result with the same value and a null error.
      */
     inspectErr(predicate: (error: E) => boolean) {
-        return this.isErrAnd(predicate)
-            ? this
-            : new Result(this.value as T, null)
+        return this.isErrAnd(predicate) ? this : new Result(this.value, null)
     }
     /**
      * Throws an error with the specified message if the result is an error.
@@ -224,7 +226,7 @@ export class Result<T, E> {
      * @returns The combined Result.
      */
     and<U>(result: Result<U, E>) {
-        return this.isOk() ? result : new Result(null, this.error as E)
+        return this.isOk() ? result : new Result<U, E>(null, this.error)
     }
     /**
      * Chains a new `Result` by applying a function to the value of the current `Result`.
@@ -244,7 +246,7 @@ export class Result<T, E> {
      * @param result - The result to return if the current result is not successful.
      * @returns The current result if it is successful, otherwise the provided result.
      */
-    or<F>(result: Result<T, F>) {
+    or<F extends Error = Error>(result: Result<T, F>) {
         return this.isOk() ? this : result
     }
     /**
@@ -255,7 +257,7 @@ export class Result<T, E> {
      * @returns The current `Result` if it is successful, otherwise the result of `fn`.
      * @template F - The type of the error value.
      */
-    orElse<F>(fn: () => Result<T, F>) {
+    orElse<F extends Error = Error>(fn: () => Result<T, F>) {
         return this.isOk() ? this : fn()
     }
     /**
@@ -287,7 +289,7 @@ export class Result<T, E> {
      * @param {{ Ok: (value: T) => R, Err: (error: E) => R }} patterns - The patterns to match against.
      * @returns {R} - The result of the matching pattern.
      */
-    static match<T, E, R>(
+    static match<T, E extends Error, R>(
         result: Result<T, E>,
         patterns: {
             Ok: (value: T) => R

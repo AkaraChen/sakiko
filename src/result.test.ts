@@ -44,7 +44,7 @@ test('result mapping', () => {
     ).toBe(2)
     expect(() =>
         Result.err('error')
-            .mapErr(v => v + '2')
+            .mapErr(v => new Error(v.message + '2'))
             .unwrap(),
     ).toThrowError('error2')
 })

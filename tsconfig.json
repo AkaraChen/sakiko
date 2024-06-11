@@ -1,6 +1,6 @@
 {
     "extends": "@akrc/tsconfig/node.json",
     "compilerOptions": {
-        "strict": true,
+        "strict": true
     }
 }

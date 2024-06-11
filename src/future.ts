@@ -1,10 +1,12 @@
+import { toError } from './utils'
+
 /**
  * Represents a Future, which is a subclass of Promise.
  * @template T The type of the resolved value.
  * @template E The type of the rejected error.
  */
-export class Future<T, E> extends Promise<T> {
-    protected state: 'Pending' | 'Fulfilled' | 'Rejected';
+export class Future<T, E extends Error = Error> extends Promise<T> {
+    protected state: 'Pending' | 'Fulfilled' | 'Rejected'
 
     /**
      * Creates a new Future instance.
@@ -16,23 +18,23 @@ export class Future<T, E> extends Promise<T> {
             reject: (error: E) => void,
         ) => void,
     ) {
-        let resolve: (value: T) => void;
-        let reject: (error: E) => void;
+        let resolve: (value: T) => void
+        let reject: (error: E) => void
         super((res, rej) => {
-            resolve = res;
-            reject = rej;
-        });
-        this.state = 'Pending';
+            resolve = res
+            reject = rej
+        })
+        this.state = 'Pending'
         executor(
             value => {
-                this.state = 'Fulfilled';
-                resolve(value);
+                this.state = 'Fulfilled'
+                resolve(value)
             },
             error => {
-                this.state = 'Rejected';
-                reject(error);
+                this.state = 'Rejected'
+                reject(error)
             },
-        );
+        )
     }
 
     /**
@@ -40,8 +42,8 @@ export class Future<T, E> extends Promise<T> {
      * @param value The value to resolve with.
      * @returns A new Future instance.
      */
-    static ok<T, E>(value: T) {
-        return Future.from<T, E>(Promise.resolve(value));
+    static ok<T, E extends Error = Error>(value: T) {
+        return Future.from<T, E>(Promise.resolve(value))
     }
 
     /**
@@ -49,8 +51,8 @@ export class Future<T, E> extends Promise<T> {
      * @param error The error to reject with.
      * @returns A new Future instance.
      */
-    static err<T, E>(error: E) {
-        return Future.from<T, E>(Promise.reject(error));
+    static err<T, E extends Error = Error>(error: E | string) {
+        return Future.from<T, E>(Promise.reject(toError(error)))
     }
 
     /**
@@ -58,10 +60,10 @@ export class Future<T, E> extends Promise<T> {
      * @param promise The Promise to create the Future from.
      * @returns A new Future instance.
      */
-    static from<T, E>(promise: Promise<T>) {
+    static from<T, E extends Error = Error>(promise: Promise<T>) {
         return new Future<T, E>((resolve, reject) => {
-            promise.then(resolve).catch(reject);
-        });
+            promise.then(resolve).catch(reject)
+        })
     }
 
     /**
@@ -69,7 +71,7 @@ export class Future<T, E> extends Promise<T> {
      * @returns True if the Future is pending, false otherwise.
      */
     isPending() {
-        return this.state === 'Pending';
+        return this.state === 'Pending'
     }
 
     /**
@@ -77,7 +79,7 @@ export class Future<T, E> extends Promise<T> {
      * @returns True if the Future is fulfilled, false otherwise.
      */
     isFulfilled() {
-        return this.state === 'Fulfilled';
+        return this.state === 'Fulfilled'
     }
 
     /**
@@ -85,6 +87,6 @@ export class Future<T, E> extends Promise<T> {
      * @returns True if the Future is rejected, false otherwise.
      */
     isRejected() {
-        return this.state === 'Rejected';
+        return this.state === 'Rejected'
     }
 }
