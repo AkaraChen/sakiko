@@ -60,4 +60,10 @@ test('static from method', async () => {
     const v = await future
     expect(v).toBe(1)
     expect(future.isFulfilled()).toBe(true)
+
+    const futureFromAsync = Future.from(async () => 1)
+    expect(futureFromAsync.isPending()).toBe(true)
+    const v2 = await futureFromAsync
+    expect(v2).toBe(1)
+    expect(futureFromAsync.isFulfilled()).toBe(true)
 })

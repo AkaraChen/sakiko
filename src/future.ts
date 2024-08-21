@@ -1,5 +1,7 @@
 import { toError } from './utils'
 
+type PromiseComposer<T> = () => Promise<T>
+
 /**
  * Represents a Future, which is a subclass of Promise.
  * @template T The type of the resolved value.
@@ -60,9 +62,12 @@ export class Future<T, E extends Error = Error> extends Promise<T> {
      * @param promise The Promise to create the Future from.
      * @returns A new Future instance.
      */
-    static from<T, E extends Error = Error>(promise: Promise<T>) {
+    static from<T, E extends Error = Error>(
+        promise: Promise<T> | PromiseComposer<T>,
+    ) {
+        const value = promise instanceof Promise ? promise : promise()
         return new Future<T, E>((resolve, reject) => {
-            promise.then(resolve).catch(reject)
+            value.then(resolve).catch(reject)
         })
     }
 
