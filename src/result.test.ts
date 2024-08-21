@@ -48,3 +48,10 @@ test('result mapping', () => {
             .unwrap(),
     ).toThrowError('error2')
 })
+
+test('result to option', async () => {
+    const ok = Result.ok(1)
+    const err = Result.err('error')
+    expect(ok.option().unwrap()).toBe(1)
+    expect(err.option().value).toBe(null)
+})

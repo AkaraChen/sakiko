@@ -1,3 +1,4 @@
+import { Option } from './option'
 import { toError } from './utils'
 
 /**
@@ -299,5 +300,17 @@ export class Result<T, E extends Error = Error> {
         return result.isOk()
             ? patterns.Ok(result.value as T)
             : patterns.Err(result.error as E)
+    }
+
+    /**
+     * Returns an Option containing the value of this Result if it is Ok, otherwise returns None.
+     *
+     * @returns An Option containing the value if it is Ok, otherwise None.
+     */
+    option(): Option<T> {
+        if (this.isOk()) {
+            return Option.some(this.value as T)
+        }
+        return Option.none()
     }
 }

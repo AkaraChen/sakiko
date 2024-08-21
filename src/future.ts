@@ -1,3 +1,4 @@
+import { Result } from './result'
 import { toError } from './utils'
 
 type PromiseComposer<T> = () => Promise<T>
@@ -36,6 +37,18 @@ export class Future<T, E extends Error = Error> extends Promise<T> {
                 this.state = 'Rejected'
                 reject(error)
             },
+        )
+    }
+
+    /**
+     * Asynchronously retrieves the result of the future.
+     * 
+     * @returns A promise that resolves to a `Result` object containing either the value or the error.
+     */
+    async result(): Promise<Result<T, E>> {
+        return this.then(
+            value => Result.ok(value),
+            error => Result.err(error),
         )
     }
 

@@ -67,3 +67,11 @@ test('static from method', async () => {
     expect(v2).toBe(1)
     expect(futureFromAsync.isFulfilled()).toBe(true)
 })
+
+test('result method', async () => {
+    const future = new Future<number>(resolve => {
+        setTimeout(() => resolve(1), 100)
+    })
+    const result = await future.result()
+    expect(result.unwrap()).toBe(1)
+})
