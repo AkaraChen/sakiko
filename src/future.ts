@@ -42,7 +42,7 @@ export class Future<T, E extends Error = Error> extends Promise<T> {
 
     /**
      * Asynchronously retrieves the result of the future.
-     * 
+     *
      * @returns A promise that resolves to a `Result` object containing either the value or the error.
      */
     async result(): Promise<Result<T, E>> {
