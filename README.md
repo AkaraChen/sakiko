@@ -1,5 +1,7 @@
 # sakiko
 
+> Deprecated, use [Effect-ts](https://effect.website) instead.
+
 Some monad implement with js.
 
 [Document](https://sakiko.vercel.app)
@@ -46,6 +48,5 @@ future.isOk() // true if the future is resolved
 
 // Or you can map to `Result`
 const result = await future.result()
-result
-    .unwrapOr(0)
+result.unwrapOr(0)
 ```
