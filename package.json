@@ -19,10 +19,10 @@
         "publint": "^0.2.7",
         "tslib": "^2.6.2",
         "tsup": "^8.0.2",
-        "typedoc": "^0.25.13",
+        "typedoc": "^0.26.7",
         "typedoc-material-theme": "^1.0.2",
         "typescript": "^5.4.5",
-        "vitest": "^1.6.0"
+        "vitest": "^2.1.1"
     },
     "files": [
         "dist"
