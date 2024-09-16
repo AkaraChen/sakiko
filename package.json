@@ -33,9 +33,26 @@
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "exports": {
-        "types": "./dist/index.d.mts",
-        "require": "./dist/index.js",
-        "import": "./dist/index.mjs"
+        ".": {
+            "import": {
+                "types": "./dist/index.d.mts",
+                "import": "./dist/index.mjs"
+            },
+            "require": {
+                "types": "./dist/index.d.ts",
+                "require": "./dist/index.js"
+            }
+        },
+        "./effect": {
+            "import": {
+                "types": "./dist/effect.d.mts",
+                "import": "./dist/effect.mjs"
+            },
+            "require": {
+                "types": "./dist/effect.d.ts",
+                "require": "./dist/effect.js"
+            }
+        }
     },
     "packageManager": "pnpm@9.1.4"
 }
