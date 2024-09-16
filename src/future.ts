@@ -107,4 +107,16 @@ export class Future<T, E extends Error = Error> extends Promise<T> {
     isRejected() {
         return this.state === 'Rejected'
     }
+
+    /**
+     * Determines if a given value is an instance of the `Future` class.
+     *
+     * @template T - The type of the value that the `Future` resolves to.
+     * @template E - The type of the error that the `Future` may reject with, extending `Error`.
+     * @param value - The value to check.
+     * @returns A boolean indicating whether the value is an instance of `Future`.
+     */
+    static isFuture<T, E extends Error>(value: any): value is Future<T, E> {
+        return value instanceof Future
+    }
 }

@@ -8,6 +8,13 @@ import { toError } from './utils'
  * @template E The type of the error.
  */
 export class Result<T, E extends Error = Error> {
+    /**
+     * Represents an error state in the Result type.
+     * This property holds the error value if the Result is an error, otherwise it is null.
+     *
+     * @readonly
+     * @type {E | null}
+     */
     readonly error: E | null
 
     constructor(
@@ -74,8 +81,24 @@ export class Result<T, E extends Error = Error> {
     isOk(): boolean {
         return !!this.value && !this.error
     }
-    isErr() {
+    /**
+     * Checks if the current instance represents an error.
+     *
+     * @returns {boolean} `true` if the instance is an error, otherwise `false`.
+     */
+    isErr(): boolean {
         return !this.value && !!this.error
+    }
+    /**
+     * Determines if a given value is an instance of the `Result` class.
+     *
+     * @template T - The type of the successful result.
+     * @template E - The type of the error, which extends the `Error` class.
+     * @param value - The value to check.
+     * @returns A boolean indicating whether the value is an instance of `Result`.
+     */
+    static isResult<T, E extends Error>(value: any): value is Result<T, E> {
+        return value instanceof Result
     }
     /**
      * Checks if the result is Ok and satisfies the given predicate.

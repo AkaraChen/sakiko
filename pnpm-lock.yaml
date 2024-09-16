@@ -10,6 +10,9 @@ importers:
             '@akrc/tsconfig':
                 specifier: ^1.0.2
                 version: 1.0.2
+            effect:
+                specifier: ^3.7.3
+                version: 3.7.3
             prettier:
                 specifier: ^3.2.5
                 version: 3.2.5
@@ -1008,6 +1011,12 @@ packages:
         resolution:
             {
                 integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==,
+            }
+
+    effect@3.7.3:
+        resolution:
+            {
+                integrity: sha512-XHz8wfO2l+S0v14NnwbJZV77U1w6XWv2y4TH8tP2s6c2TMkHLkh7QJ7IfWv+bRcAIotI1+gNZFr564c2hLV5+Q==,
             }
 
     emoji-regex@8.0.0:
@@ -2548,6 +2557,8 @@ snapshots:
             path-type: 4.0.0
 
     eastasianwidth@0.2.0: {}
+
+    effect@3.7.3: {}
 
     emoji-regex@8.0.0: {}
 
